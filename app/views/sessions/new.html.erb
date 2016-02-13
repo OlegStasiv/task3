@@ -1,0 +1,31 @@
+<% provide(:title, "Sign in") %>
+
+<div class="row-fluid">
+  <div class="span4 well">
+    <%= form_for(:session, url: sessions_path, :html => {:class => "form-horizontal"}) do |f| %>
+        <fieldset>
+          <legend>Sign In</legend>
+          <div class="control-group">
+            <%= f.label :email, :class => "control-label" %>
+            <div class="controls">
+              <%= f.text_field :email, :class => "input-xlarge" %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <%= f.label :password, :class => "control-label" %>
+            <div class="controls">
+              <%= f.password_field :password, :class => "input-xlarge" %>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <%= f.submit "Sign in", :class => "btn btn-primary" %>
+          </div>
+          <p></p>
+          <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+        </fieldset>
+    <% end %>
+  </div>
+</div>
+

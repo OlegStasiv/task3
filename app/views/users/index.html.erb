@@ -1,0 +1,19 @@
+<div id="users">
+  <br><b><h1>Find friends</h1></b>
+  <% for user in @users %>
+      <div class="user">
+
+        <p>
+          <% if current_user.name != user.name %>
+
+              <br><strong><%=h user.name %></strong>
+
+              <%= link_to "Add Friend", friendships_create_path(:friend_id=> user) %>
+
+
+              <div class="clear"></div>
+              </p>
+          <% end %>
+          </div>
+  <% end %>
+</div>
