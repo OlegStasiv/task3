@@ -3,8 +3,6 @@ Rails.application.routes.draw do
   get 'friendships/update'
   get 'friendships/destroy'
 
-
-
   resources :users
 
   resources :sessions, only: [:new, :create, :destroy]
@@ -28,6 +26,28 @@ Rails.application.routes.draw do
       post 'users/login'
     end
   end
+
+  namespace :api do
+    namespace :v1 do
+      resources :friendships do
+        collection do
+          get  :my_friends
+          get  :who_want
+        end
+      end
+
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :friendships
+          post 'friendships/create' => 'friendships#create'
+          post 'friendships/update' => 'friendships#update'
+          post 'friendships/destroy' => 'friendships#destroy'
+    end
+  end
+
 
 
 end
