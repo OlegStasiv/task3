@@ -37,6 +37,7 @@ class API::V1::FriendshipsController < ApplicationController
     user_token = request.headers["Token"]
     @current_user = User.find_by(token: user_token)
     @whowant = @current_user.requested_friendships
+
     render json: @whowant
   end
 
