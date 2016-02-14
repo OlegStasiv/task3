@@ -1,0 +1,9 @@
+<%= form_for [@conversation, @message], :url => new_conversation_messages_path, html: {class: "ui reply form"} do |f| %>
+    <div class="field">
+      <%= f.text_area :body, class: "form-control" %>
+    </div>
+
+    <div>
+      <%= f.submit "Send", class: "ui blue labeled submit icon button" %>
+    </div>
+    <%end%>
