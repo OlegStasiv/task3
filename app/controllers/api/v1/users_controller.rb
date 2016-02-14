@@ -1,59 +1,66 @@
 class API::V1::UsersController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  before_action :authenticate, :except => [:create,:login]
 
 
-def create
-  @user = User.create(user_params)
+  def create
+    @user = User.create(user_params)
 
-  if @user.save
-
-    render json: {user: @user}, status: 200
-  else
-    render json: {error: "can't registered"}, status: 500
+    if @user.save
+      render json: {user: @user}, status: 200
+    else
+      render json: @user.errors, status: 403
+    end
 
   end
 
   def show
     @user = User.find(params[:id])
   end
-  end
 
 
   def login
-    @user = User.where(email: params[:email]).first
-    @user&&@user.authenticate(password: params[:password])
-
-    if @user
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
 
       @user.token = @user.generate_auth_token
-
-
-      if @user.save
-        render json: {data:{token: @user.token}}, status: 200
+      if @user.save!
+        render json: {data: {token: @user.token}}, status: 200
       else
-        render json: {error: "login error"}, status: 422
+        render json: {error: "Login error"}, status: 422
       end
     else
       render json: {error: "User not found"}, status: 401
     end
   end
 
-  private
-def user_params
-  params.require(:user).permit(:name, :email, :password, :password_confirmation)
-end
-  def authenticate
-    authenticate_token || render_unauthorized
+
+def profile
+  user_token = request.headers["Token"]
+  @user = User.find_by_token(user_token)
+
+  if @user.update_attributes(user_params)
+    render json: @user
+  else
+    render json: {error: "Was not updated"}, status: 401
   end
+end
+
+
+private
+
+  def user_params
+    params.permit(:name, :email, :password, :password_confirmation)
+  end
+
 
   def authenticate_token
     authenticate_with_http_token do |token, options|
       User.find_by(token: token)
     end
   end
+end
 
-  def render_unauthorized
-    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-    render json: 'Bad credentials', status: 401
-  end
-  end
+
+
+
