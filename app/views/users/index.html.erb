@@ -9,6 +9,7 @@
               <br><strong><%=h user.name %></strong>
 
               <%= link_to " -- Add Friend", friendships_create_path(:friend_id=> user) %>
+              <%= link_to "Send message", conversation_messages_path(:conversation_id=>user) %>
 
 
               <div class="clear"></div>

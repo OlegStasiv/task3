@@ -30,7 +30,8 @@
           <li>
             <%= friend.email %>
             <% if current_user == @user %>
-                <%= link_to "Remove", friendships_destroy_path(:id => friend), :method => :delete %>
+                <%= link_to "Send message", conversation_messages_path(:conversation_id=>friend) %>
+
 
             <% end %>
           </li>

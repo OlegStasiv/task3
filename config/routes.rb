@@ -31,7 +31,9 @@ Rails.application.routes.draw do
       post 'users/login'
     end
   end
-
+  resources :conversation do
+    resources :messages
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.
