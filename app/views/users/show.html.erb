@@ -9,33 +9,59 @@
       </h1>
     </section>
 
-      <br>
-      <% if current_user == @user %>
-          <h1>Ай вать нет ? </h1>
-          <ul>
-            <% @user.requested_friendships.each do |request| %>
-                <li>
-                  <%= request.email %>
-                  <%= link_to "Accept", friendships_update_path(:id => request), :method => :post %>
-                  <%= link_to "Decline", friendships_destroy_path(:id => request), :method => :delete %>
-                </li>
-            <% end %>
-          </ul>
-      <% end %>
-      </br>
+    <h2>Friends Request</h2>
 
-    <h1>Мої цібори:</h1>
-    <ul>
-      <% @user.friends.each do |friend| %>
-          <li>
-            <%= friend.email %>
+    <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+      <thead>
+      <tr>
+        <th data-field="index" data-sortable="true">#</th>
+        <th data-field="name" data-sortable="true">Name</th>
+        <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="accept" data-sortable="true">Accept</th>
+        <th data-field="decline" data-sortable="true">Decline</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @user.requested_friendships.each_with_index do |request,index| %>
+          <tr>
+            <td><%= index+1  %></td>
+            <td><%= request.name %></td>
+            <td><%= request.email %></td>
+            <td><%= link_to "Accept", friendships_update_path(:id => request), :method => :post %></td>
+            <td><%= link_to "Decline", friendships_destroy_path(:id => request), :method => :delete %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <br>
+
+    <h2>My BRO:</h2>
+    <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
+      <thead>
+      <tr>
+        <th data-field="index" data-sortable="true">#</th>
+        <th data-field="name" data-sortable="true">Name</th>
+        <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="accept" data-sortable="true">Accept</th>
+        <th data-field="decline" data-sortable="true">Message</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @user.friends.each_with_index do |friend,index| %>
+          <tr>
+            <td><%= index+1  %></td>
+            <td><%= friend.name %></td>
+            <td><%= friend.email %></td>
             <% if current_user == @user %>
-                <%= link_to "Remove", friendships_destroy_path(:id => friend), :method => :delete %>
+                <td><%= link_to "Remove", friendships_destroy_path(:id => friend), :method => :delete %></td>
 
             <% end %>
-          </li>
+          </tr>
       <% end %>
-    </ul>
+      </tbody>
+    </table>
 
 
   </aside>
