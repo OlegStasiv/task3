@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'friendships/create' => 'friendships#create'
-  get 'friendships/update'
-  get 'friendships/destroy'
+  post 'friendships/update' => 'friendships#update'
+  delete 'friendships/destroy' => 'friendships#destroy'
 
   resources :users
 
@@ -48,6 +48,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :conversations do
+    resources :messages
+  end
 
 
 end
