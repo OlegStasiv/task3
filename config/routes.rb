@@ -45,6 +45,17 @@ Rails.application.routes.draw do
           post 'friendships/create' => 'friendships#create'
           post 'friendships/update' => 'friendships#update'
           post 'friendships/destroy' => 'friendships#destroy'
+      resources :conversations do
+        get 'conversation/show' => 'conversation#show'
+    end
+
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :messages
+      post 'messages/show_m' => 'messages#show_m'
     end
   end
 

@@ -1,5 +1,6 @@
 class API::V1::FriendshipsController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  before_action :authenticate
 
 
   def create
