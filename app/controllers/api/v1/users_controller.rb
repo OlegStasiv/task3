@@ -3,6 +3,7 @@ class API::V1::UsersController < ApplicationController
   before_action :authenticate, :except => [:create,:login]
 
 
+
   def create
     @user = User.create(user_params)
 
@@ -36,11 +37,9 @@ class API::V1::UsersController < ApplicationController
 
 
 def profile
-  user_token = request.headers["Token"]
-  @user = User.find_by_token(user_token)
 
-  if @user.update_attributes(user_params)
-    render json: @user
+  if @current_user.update_attributes(user_params)
+    render json: @current_user
   else
     render json: {error: "Was not updated"}, status: 401
   end
@@ -53,11 +52,6 @@ private
     params.permit(:name, :email, :password, :password_confirmation)
   end
 
-  def authenticate_token
-    authenticate_with_http_token do |token, options|
-      User.find_by(token: token)
-    end
-  end
 end
 
 

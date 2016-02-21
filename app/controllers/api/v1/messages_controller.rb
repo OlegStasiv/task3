@@ -6,8 +6,6 @@ before_action do
 end
 
   def index
-    user_token = request.headers["Token"]
-    @current_user = User.find_by(token: user_token)
     @messages = @conversation.messages
     if @messages.length > 10
       @over_ten = true
@@ -46,8 +44,6 @@ end
 
   def show_m
     @showall = []
-    user_token = request.headers["Token"]
-    @current_user = User.find_by(token: user_token)
     @messages = @conversation.messages
     @messages.each do |message|
       @email = message.user_id

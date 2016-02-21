@@ -26,8 +26,6 @@ class API::V1::ConversationsController < ApplicationController
   def show
     @users = User.all
     @conversations = Conversation.all
-    user_token = request.headers["Token"]
-    @current_user = User.find_by(token: user_token)
     @conversations.each do |conversation|
       if conversation.sender_id == @current_user.id || conversation.recipient_id == @current_user.id
         if conversation.sender_id == @current_user.id
