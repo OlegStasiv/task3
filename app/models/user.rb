@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: true
   validates :password, length: { minimum: 6 }, unless: Proc.new { |user| user.password.nil? }
   validates :password_confirmation, presence: true, unless: Proc.new { |user| user.password.nil? }
+  validates_presence_of :password, :password_confirmation
 
   has_secure_password
 #comment
