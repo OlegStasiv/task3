@@ -4,11 +4,14 @@
     <section>
       <h1>
         <br><%= gravatar_for @user %>
-        <%= @user.name %>
-
+        <%= @user.name %> <br>
+        <%= @user.email %> <br>
+        <% if @user.email == current_user.email %>
+        <%= link_to "Edit profile", edit_user_path(current_user)%>
+<%end%>
       </h1>
     </section>
-
+    <% if current_user == @user %>
     <h2>Friends Request</h2>
 
     <table class=" table table-striped" data-sort-name="name" data-sort-order="desc">
@@ -17,20 +20,24 @@
         <th data-field="index" data-sortable="true">#</th>
         <th data-field="name" data-sortable="true">Name</th>
         <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="view profile" data-sortable="true">View Profile</th>
         <th data-field="accept" data-sortable="true">Accept</th>
         <th data-field="decline" data-sortable="true">Messages</th>
       </tr>
       </thead>
 
       <tbody>
+
       <% @user.requested_friendships.each_with_index do |request,index| %>
           <tr>
             <td><%= index+1  %></td>
             <td><%= request.name %></td>
             <td><%= request.email %></td>
+                <td><%= link_to "View Profile", user_path(:id => friend.id) %></td>
             <td><%= link_to "Accept", friendships_update_path(:id => request), :method => :post %></td>
             <td><%= link_to "Decline", friendships_destroy_path(:id => request), :method => :delete %></td>
           </tr>
+      <% end %>
       <% end %>
       </tbody>
     </table>
@@ -43,6 +50,7 @@
         <th data-field="index" data-sortable="true">#</th>
         <th data-field="name" data-sortable="true">Name</th>
         <th data-field="email" data-sortable="true">Email</th>
+        <th data-field="view profile" data-sortable="true">View Profile</th>
         <th data-field="accept" data-sortable="true">Accept</th>
         <th data-field="decline" data-sortable="true">Message</th>
       </tr>
@@ -51,10 +59,12 @@
       <tbody>
       <% @user.friends.each_with_index do |friend,index| %>
           <tr>
+            <% if current_user == @user %>
             <td><%= index+1  %></td>
             <td><%= friend.name %></td>
             <td><%= friend.email %></td>
-            <% if current_user == @user %>
+
+                <td><%= link_to "View Profile", user_path(:id => friend.id) %></td>
                 <td><%= link_to "Remove", friendships_destroy_path(:id => friend), :method => :delete %></td>
                 <td><%= link_to 'Send!', conversations_path(sender_id: current_user.id, recipient_id: friend.id), method: 'post'%></td>
             <% end %>
